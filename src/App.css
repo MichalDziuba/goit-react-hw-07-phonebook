@@ -1,0 +1,8 @@
+.App {
+  display:grid;
+  margin-left: 30px;
+  margin-top: 50px;
+}
+*{
+  font-family: 'Montserrat', sans-serif;
+}
