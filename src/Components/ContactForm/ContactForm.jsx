@@ -4,11 +4,19 @@ import PropTypes from "prop-types";
 import Input from "../Input/Input";
 import Label from "../Label/Label";
 import { useDispatch, useSelector } from "react-redux";
-import { addContact } from "../../Redux/actions";
+import { addContact } from "../../Redux/reducers";
+import axios from "axios";
+import { nanoid } from "nanoid";
+axios.defaults.baseURL = "https://62486dce20197bb4626917a1.mockapi.io/";
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts);
+
+  const contacts = useSelector((state) => state.contacts.items);
+
+  console.log(contacts);
+
   const contactsNames = contacts.map((e) => e.name);
+  console.log(contactsNames)
 
   const saveContact = (evt) => {
     evt.preventDefault();
@@ -18,10 +26,29 @@ const ContactForm = () => {
     if (contactsNames.includes(contact)) {
       alert(`${contact} is already in contacts!`);
     } else {
-      dispatch(addContact(contact, tel));
+      // axios.post('/contacts', {
+      //   id: nanoid(),
+      //   createdAt: new Date(),
+      //   name: contact,
+      //   phone:tel,
+      // }).then(function (response) {
+      //   console.log(response)
+      // }).catch(function (error) {
+      //   console.log(error)
+      // })
+      dispatch(
+        addContact({
+          id: nanoid(),
+          name: contact,
+          number: tel,
+        })
+      );
       form.reset();
-    }
-  };
+      console.log(contacts);
+      console.log(contact, tel);
+      // }
+    };
+  }
   return (
     <div>
       <form onSubmit={saveContact} className={style.form}>

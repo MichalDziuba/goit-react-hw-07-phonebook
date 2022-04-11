@@ -4,13 +4,33 @@ import styles from "./ContactList.module.css";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import Filter from "../Filter/Filter";
-import { deleteContact } from "../../Redux/actions";
+import { deleteContact } from "../../Redux/reducers";
 import { saveToLocalStorage } from "../../Redux/state";
+import axios from "axios";
+axios.defaults.baseURL = "https://62486dce20197bb4626917a1.mockapi.io/";
+// const contactsApi = async () => {
+//   const response = await axios
+//     .get("/contacts")
+//     .then(function (response) {
+//       console.log(response.data);
+//       return response.data;
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+//   return response;
+// };
+// const contactsApi1 =  contactsApi() ;
+// console.log(contactsApi1);
+const ContactList = () => {
+  const contacts = useSelector((state) => state.contacts.items);
+  const filter = useSelector((state) => state.contacts.filter);
+  console.log(contacts.length)
+  console.log(filter)
 
-function ContactList() {
-  const contacts = useSelector((state) => state.contacts);
-  const filter = useSelector((state) => state.filter);
-  saveToLocalStorage("CONTACTS", contacts);
+  
+
+  // saveToLocalStorage("CONTACTS", contacts);
   const dispatch = useDispatch();
   return (
     <div>
@@ -20,7 +40,7 @@ function ContactList() {
           <Filter />
           <ul className={styles.contact__list}>
             {contacts
-              .filter(({ name }) => name.toLowerCase().includes(filter))
+              .filter(({ name }) => name.toLowerCase().includes(filter.toLowerCase()))
               .map((item) => (
                 <li key={nanoid()} className={styles.contact__item}>
                   {item.name}: {item.number}
@@ -36,11 +56,11 @@ function ContactList() {
           </ul>
         </>
       ) : (
-          <div className={styles.addNewContact}>ADD A NEW CONTACT !</div>
+        <div className={styles.addNewContact}>ADD A NEW CONTACT !</div>
       )}
     </div>
   );
-}
+};
 
 ContactList.propTypes = {
   filter: PropTypes.string,

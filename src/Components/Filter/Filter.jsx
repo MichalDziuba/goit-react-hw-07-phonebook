@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import Input from "../Input/Input";
 import Label from "../Label/Label";
-import { useDispatch, useSelector } from "react-redux";
-import { filterContacts } from "../../Redux/actions";
+import { useDispatch } from "react-redux";
+import { filterContacts } from "../../Redux/reducers";
 const Filter=()=> {
   const dispatch = useDispatch();
   const filterName = (evt) => {
