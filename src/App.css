@@ -3,6 +3,10 @@
   margin-left: 30px;
   margin-top: 50px;
 }
+.loading{
+  font-size:40px;
+  margin: top 20px;
+}
 *{
   font-family: 'Montserrat', sans-serif;
 }

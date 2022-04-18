@@ -1,38 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { nanoid } from "nanoid";
 import styles from "./ContactList.module.css";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import Filter from "../Filter/Filter";
-import { deleteContact } from "../../Redux/reducers";
-import { saveToLocalStorage } from "../../Redux/state";
+import { asyncDeleteContact } from "../../Redux/reducers";
 import axios from "axios";
+import {asyncFetchContacts} from '../../Redux/reducers'
 axios.defaults.baseURL = "https://62486dce20197bb4626917a1.mockapi.io/";
-// const contactsApi = async () => {
-//   const response = await axios
-//     .get("/contacts")
-//     .then(function (response) {
-//       console.log(response.data);
-//       return response.data;
-//     })
-//     .catch(function (error) {
-//       console.log(error);
-//     });
-//   return response;
-// };
-// const contactsApi1 =  contactsApi() ;
-// console.log(contactsApi1);
+
 const ContactList = () => {
   const contacts = useSelector((state) => state.contacts.items);
   const filter = useSelector((state) => state.contacts.filter);
-  console.log(contacts.length)
-  console.log(filter)
+const dispatch = useDispatch();
+  const status = useSelector(state => state.contacts.status);
 
-  
-
-  // saveToLocalStorage("CONTACTS", contacts);
-  const dispatch = useDispatch();
+  console.log(status)
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(asyncFetchContacts())
+    }
+  },[status,dispatch])
   return (
+
     <div>
       {contacts.length > 0 ? (
         <>
@@ -47,7 +37,8 @@ const ContactList = () => {
                   <button
                     className={styles.button__delete}
                     type="button"
-                    onClick={() => dispatch(deleteContact(item.id))}
+                    // onClick={() => dispatch(deleteContact(item.id))}
+                    onClick={()=>dispatch(asyncDeleteContact(item.id))}
                   >
                     Delete
                   </button>
